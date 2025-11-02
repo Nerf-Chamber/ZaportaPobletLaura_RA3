@@ -50,7 +50,6 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         if (GetIsGrounded())
         {
-            _animation.SetJumpState(true);
             _animation.FlipY();
             _jump.InvertGravity();
         }
