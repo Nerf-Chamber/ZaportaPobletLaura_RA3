@@ -1,13 +1,18 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions inputActions;
+    private Camera mainCamera;
     private Vector2 onMoveDirection;
 
     private bool isRunning;
     private bool isFacingRight;
+
+    private bool didCameraChangeOne = false;
+    private bool canCameraChange = true;
 
     public float speed;
 
@@ -16,6 +21,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         base.Awake();
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
+        mainCamera = Camera.main;
         isFacingRight = transform.localScale.x == 1;
     }
 
@@ -53,6 +59,31 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _animation.FlipY();
             _jump.InvertGravity();
         }
+    }
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!canCameraChange) return;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("CameraChangeOne"))
+        {
+            float move = didCameraChangeOne ? 10 : -10;
+            Vector3 newCameraPosition = new Vector2(mainCamera.transform.position.x, mainCamera.transform.position.y + move);
+            newCameraPosition.z = mainCamera.transform.position.z;
+            mainCamera.transform.position = newCameraPosition;
+            didCameraChangeOne = !didCameraChangeOne;
+
+            // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
+            StartCoroutine(CameraChangeCooldown(0.5f));
+        }
+    }
+
+    // IEnumerator type return for coroutine
+    private IEnumerator CameraChangeCooldown(float delay)
+    {
+        canCameraChange = false;
+        // Yield: Returns one value at a time
+        yield return new WaitForSeconds(delay);
+        canCameraChange = true;
     }
 
     private bool GetIsGrounded()
