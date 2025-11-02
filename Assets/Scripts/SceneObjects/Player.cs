@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions inputActions;
-    private Camera mainCamera;
     private Vector2 onMoveDirection;
 
     private bool isRunning;
@@ -21,7 +20,6 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         base.Awake();
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
-        mainCamera = Camera.main;
         isFacingRight = transform.localScale.x == 1;
     }
 
@@ -64,12 +62,11 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         if (!canCameraChange) return;
 
+        // Eventually a switch for every change of stage trigger
         if (collision.gameObject.layer == LayerMask.NameToLayer("CameraChangeOne"))
         {
-            float move = didCameraChangeOne ? 10 : -10;
-            Vector3 newCameraPosition = new Vector2(mainCamera.transform.position.x, mainCamera.transform.position.y + move);
-            newCameraPosition.z = mainCamera.transform.position.z;
-            mainCamera.transform.position = newCameraPosition;
+            CameraLocations locationToGo = didCameraChangeOne ? CameraLocations.StageOne : CameraLocations.StageTwo;
+            CameraManager.Instance.ChangeStage(locationToGo);
             didCameraChangeOne = !didCameraChangeOne;
 
             // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
