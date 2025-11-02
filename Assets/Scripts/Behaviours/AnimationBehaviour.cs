@@ -16,6 +16,12 @@ public class AnimationBehaviour : MonoBehaviour
         localScale.x *= -1;
         transform.localScale = localScale;
     }
+    public void FlipY()
+    {
+        Vector3 localScale = transform.localScale;
+        localScale.y *= -1;
+        transform.localScale = localScale;
+    }
     public void SetRunState(bool isRunning)
     {
         _an.SetBool("isRunning", isRunning);

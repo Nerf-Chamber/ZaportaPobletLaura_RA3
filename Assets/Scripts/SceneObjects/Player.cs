@@ -5,6 +5,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions inputActions;
     private Vector2 onMoveDirection;
+
     private bool isRunning;
     private bool isFacingRight;
 
@@ -44,5 +45,24 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         {
             onMoveDirection = Vector2.zero;
         }
+    }
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (GetIsGrounded())
+        {
+            _animation.SetJumpState(true);
+            _animation.FlipY();
+            _jump.InvertGravity();
+        }
+    }
+
+    private bool GetIsGrounded()
+    {
+        float raycastDistance = 0.7f;
+
+        bool hitFloor = Physics2D.Raycast(transform.position, Vector2.down, raycastDistance, LayerMask.GetMask("Terrain"));
+        bool hitCeiling = Physics2D.Raycast(transform.position, Vector2.up, raycastDistance, LayerMask.GetMask("Terrain"));
+
+        return hitFloor || hitCeiling;
     }
 }
