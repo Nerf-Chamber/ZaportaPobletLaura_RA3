@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,10 +8,10 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private InputSystem_Actions inputActions;
     private Vector2 onMoveDirection;
 
+    private Dictionary<(CameraLocations, CameraLocations), bool> cameraChangeStates;
+
     private bool isRunning;
     private bool isFacingRight;
-
-    private bool didCameraChangeOne = false;
     private bool canCameraChange = true;
 
     public float speed;
@@ -25,6 +26,15 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     private void OnEnable() => inputActions.Enable();
     private void OnDisable() => inputActions.Disable();
+
+    private void Start()
+    {
+        cameraChangeStates = new Dictionary<(CameraLocations, CameraLocations), bool>
+        {
+            {(CameraLocations.StageOne, CameraLocations.StageTwo), false},
+            {(CameraLocations.StageTwo, CameraLocations.StageThree), false}
+        };
+    }
 
     private void Update()
     {
@@ -60,17 +70,26 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!canCameraChange) return;
+        if (!canCameraChange) return;;
 
-        // Eventually a switch for every change of stage trigger
-        if (collision.gameObject.layer == LayerMask.NameToLayer("CameraChangeOne"))
+        (CameraLocations, CameraLocations) locations;
+
+        switch (collision.gameObject.layer)
         {
-            CameraLocations locationToGo = didCameraChangeOne ? CameraLocations.StageOne : CameraLocations.StageTwo;
-            CameraManager.Instance.ChangeStage(locationToGo);
-            didCameraChangeOne = !didCameraChangeOne;
+            case int layer when layer == LayerMask.NameToLayer("CameraChangeOne"):
+                locations = (CameraLocations.StageOne, CameraLocations.StageTwo);
+                break;
+            case int layer when layer == LayerMask.NameToLayer("CameraChangeTwo"):
+                locations = (CameraLocations.StageTwo, CameraLocations.StageThree);
+                break;
+            default:
+                return;
+        }
 
-            // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
-            StartCoroutine(CameraChangeCooldown(0.5f));
+        if (cameraChangeStates.TryGetValue(locations, out bool didCameraChange))
+        {
+            ChangeCamera(locations, ref didCameraChange);
+            cameraChangeStates[locations] = didCameraChange;
         }
     }
 
@@ -82,7 +101,15 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         yield return new WaitForSeconds(delay);
         canCameraChange = true;
     }
+    private void ChangeCamera((CameraLocations, CameraLocations) locations, ref bool didCameraChange)
+    {
+        CameraLocations locationToGo = didCameraChange ? locations.Item1 : locations.Item2;
+        CameraManager.Instance.ChangeStage(locationToGo);
+        didCameraChange = !didCameraChange;
 
+        // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
+        StartCoroutine(CameraChangeCooldown(0.5f));
+    }
     private bool GetIsGrounded()
     {
         float raycastDistance = 0.7f;
