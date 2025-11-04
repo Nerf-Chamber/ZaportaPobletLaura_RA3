@@ -10,6 +10,6 @@ public class MoveBehaviour : MonoBehaviour
     }
     public void MoveX(float directionX, float speed)
     {
-        _rb.linearVelocity = new Vector2(directionX * speed, _rb.linearVelocityY);
+        _rb.linearVelocity = new Vector2(directionX * speed, _rb.linearVelocity.y);
     }
 }
