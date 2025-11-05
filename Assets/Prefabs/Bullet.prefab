@@ -9,9 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5505440591323145010}
+  - component: {fileID: 1550912547907377053}
   - component: {fileID: 4091673848023887224}
   - component: {fileID: -8612748679564443902}
-  m_Layer: 0
+  - component: {fileID: 802048273224830877}
+  - component: {fileID: 4376728150124591236}
+  - component: {fileID: -152948115987211122}
+  m_Layer: 14
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,6 +37,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1550912547907377053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6125629814346656159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 532822385f52f074b91b0fe4cb131960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rb: {fileID: 802048273224830877}
+  _animation: {fileID: 0}
+  collisionTerrainDirection: {x: -1, y: 0}
 --- !u!212 &4091673848023887224
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -134,3 +153,64 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64, y: 0.5275}
   m_EdgeRadius: 0
+--- !u!50 &802048273224830877
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6125629814346656159}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &4376728150124591236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6125629814346656159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffcb50112eb20134f9ddbf1b4f0a0202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &-152948115987211122
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6125629814346656159}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 938589cf309ac734f9a9f8a1c33ca442, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

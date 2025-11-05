@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +14,8 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private bool isRunning;
     private bool isFacingRight;
     private bool canCameraChange = true;
+
+    public bool isDead = false;
 
     public float speed;
 
@@ -68,9 +71,20 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _jump.InvertGravity();
         }
     }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead)
+        {
+            isDead = true;
+            _animation.SetDeathState(true);
+            _jump.Jump(175f);
+            inputActions.Disable();
+        }
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!canCameraChange) return;;
+        if (!canCameraChange) return;
 
         (CameraLocations, CameraLocations) locations;
 

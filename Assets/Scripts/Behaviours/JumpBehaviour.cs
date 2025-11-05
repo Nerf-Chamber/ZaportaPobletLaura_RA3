@@ -12,4 +12,8 @@ public class JumpBehaviour : MonoBehaviour
     {
         _rb.gravityScale *= -1;
     }
+    public void Jump(float jumpPower)
+    {
+        _rb.AddForce(Vector2.up * jumpPower);
+    }
 }

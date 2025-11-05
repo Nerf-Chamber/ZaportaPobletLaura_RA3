@@ -26,4 +26,8 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("isRunning", isRunning);
     }
+    public void SetDeathState(bool isDead)
+    {
+        _an.SetBool("isDead", isDead);
+    }
 }

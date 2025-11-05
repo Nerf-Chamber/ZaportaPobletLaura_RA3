@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Spawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
     private float timeToWait = 0;
     private float timeBetweenObjects = 2.5f;
@@ -38,7 +38,7 @@ public abstract class Spawner : MonoBehaviour
         GameObject go = objectStack.Pop();
         go.SetActive(true);
         go.transform.position = transform.position;
-        go.GetComponent<Rigidbody2D>().linearVelocityX = 2f;
+        go.GetComponent<Rigidbody2D>().linearVelocity = objectDirection * objectSpeed;
         return go;
     }
     public void InstantiateObject()
@@ -47,7 +47,7 @@ public abstract class Spawner : MonoBehaviour
 
         if (spawnable != null) 
         {
-            GameObject go = Instantiate(gameObject, transform.position, Quaternion.identity);
+            GameObject go = Instantiate(gameObject, transform.position, transform.parent.rotation);
             go.GetComponent<Rigidbody2D>().linearVelocity = objectDirection * objectSpeed;
             (go.GetComponent<ISpawnable>()).spawner = this;
         }
