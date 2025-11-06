@@ -4,7 +4,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     private float timeToWait = 0;
-    private float timeBetweenObjects = 2.5f;
+    private float timeBetweenObjects = 3f;
 
     [SerializeField] private GameObject gameObject;
     [SerializeField] private Vector2 objectDirection;

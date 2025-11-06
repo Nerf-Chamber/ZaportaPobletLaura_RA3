@@ -16,7 +16,6 @@ public class Bullet : MonoBehaviour, ISpawnable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collisionTerrainDirection);
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             // Green explosion
