@@ -23,7 +23,6 @@ public class Spawner : MonoBehaviour
             else
             {
                 Pop();
-                Debug.Log(objectStack.Count);
             }
             timeToWait = Time.time + timeBetweenObjects;
         }

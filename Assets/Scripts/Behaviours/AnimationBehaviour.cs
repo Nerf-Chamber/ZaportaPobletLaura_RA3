@@ -16,6 +16,12 @@ public class AnimationBehaviour : MonoBehaviour
         localScale.x *= -1;
         transform.localScale = localScale;
     }
+    public void FlipX()
+    {
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1;
+        transform.localScale = localScale;
+    }
     public void FlipY()
     {
         Vector3 localScale = transform.localScale;
