@@ -6,24 +6,16 @@ using UnityEngine.InputSystem;
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private InputSystem_Actions inputActions;
-    private Vector2 onMoveDirection;
-
     private Dictionary<(CameraLocations, CameraLocations), bool> cameraChangeStates;
 
-    private bool isRunning;
-    private bool isFacingRight;
     private bool canCameraChange = true;
-
     public bool isDead = false;
-
-    public float speed;
 
     override protected void Awake()
     {
         base.Awake();
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
-        isFacingRight = transform.localScale.x == 1;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -40,15 +32,15 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     private void Update()
     {
-        isRunning = onMoveDirection.x != 0;
+        isMovingX = onMoveDirection.x != 0;
 
-        if (isRunning)
+        if (isMovingX)
         {
             _move.MoveX(onMoveDirection.x, speed);
             if (!isFacingRight && onMoveDirection.x > 0) { _animation.FlipX(ref isFacingRight); }
             else if (isFacingRight && onMoveDirection.x < 0) { _animation.FlipX(ref isFacingRight); }
         }
-        _animation.SetRunState(isRunning);
+        _animation.SetRunState(isMovingX);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -64,7 +56,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (GetIsGrounded())
+        if (GetIsGrounded(0.7f))
         {
             _animation.FlipY();
             _jump.InvertGravity();
@@ -122,14 +114,5 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
         // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
         StartCoroutine(CameraChangeCooldown(0.5f));
-    }
-    private bool GetIsGrounded()
-    {
-        float raycastDistance = 0.7f;
-
-        bool hitFloor = Physics2D.Raycast(transform.position, Vector2.down, raycastDistance, LayerMask.GetMask("Terrain"));
-        bool hitCeiling = Physics2D.Raycast(transform.position, Vector2.up, raycastDistance, LayerMask.GetMask("Terrain"));
-
-        return hitFloor || hitCeiling;
     }
 }
