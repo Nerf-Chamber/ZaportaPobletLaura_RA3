@@ -6,6 +6,7 @@ public enum CameraLocations
     StageOne,
     StageTwo,
     StageThree,
+    StageFour
 }
 
 public class CameraManager : MonoBehaviour
@@ -22,7 +23,8 @@ public class CameraManager : MonoBehaviour
         mainCamera = Camera.main;
         locationsList.Add(CameraLocations.StageOne, new Vector2(0, 0));
         locationsList.Add(CameraLocations.StageTwo, new Vector2(0, -10));
-        locationsList.Add(CameraLocations.StageThree, new Vector2(21, -10));
+        locationsList.Add(CameraLocations.StageThree, new Vector2(22, -10));
+        locationsList.Add(CameraLocations.StageFour, new Vector2(22, 0));
     }
 
     public void ChangeStage(CameraLocations stage)

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] private float timeRunning = 2f;
-    [SerializeField] private float timeSleeping = 2f;
+    private float timeRunning;
+    private float timeSleeping;
 
     private bool isSleeping;
     private float currentDirection = 1f;
@@ -12,12 +12,16 @@ public class Enemy : Character
     {
         base.Awake();
         isFacingRight = transform.localScale.x == 1;
+        timeRunning = Random.Range(4f, 7f);
+        timeSleeping = Random.Range(3f, 8f);
     }
 
     private void Start()
     {
         // Sleep - Run Cycle
-        Sleep();
+        float initialRandomState = Random.Range(0, 2);
+        if (initialRandomState == 0) { Sleep(); }
+        else { Run(); }
         RandomJump();
     }
 

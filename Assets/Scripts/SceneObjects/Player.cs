@@ -27,7 +27,8 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         cameraChangeStates = new Dictionary<(CameraLocations, CameraLocations), bool>
         {
             {(CameraLocations.StageOne, CameraLocations.StageTwo), false},
-            {(CameraLocations.StageTwo, CameraLocations.StageThree), false}
+            {(CameraLocations.StageTwo, CameraLocations.StageThree), false},
+            {(CameraLocations.StageThree, CameraLocations.StageFour), false}
         };
     }
 
@@ -35,12 +36,9 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         isMovingX = onMoveDirection.x != 0;
 
-        if (isMovingX)
-        {
-            _move.MoveX(onMoveDirection.x, speed);
-            if (!isFacingRight && onMoveDirection.x > 0) { _animation.FlipX(ref isFacingRight); }
-            else if (isFacingRight && onMoveDirection.x < 0) { _animation.FlipX(ref isFacingRight); }
-        }
+        _move.MoveX(onMoveDirection.x, speed);
+        if (!isFacingRight && onMoveDirection.x > 0) { _animation.FlipX(ref isFacingRight); }
+        else if (isFacingRight && onMoveDirection.x < 0) { _animation.FlipX(ref isFacingRight); }
         _animation.SetRunState(isMovingX);
     }
 
@@ -87,6 +85,9 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
                 break;
             case int layer when layer == LayerMask.NameToLayer("CameraChangeTwo"):
                 locations = (CameraLocations.StageTwo, CameraLocations.StageThree);
+                break;
+            case int layer when layer == LayerMask.NameToLayer("CameraChangeThree"):
+                locations = (CameraLocations.StageThree, CameraLocations.StageFour);
                 break;
             default:
                 return;
