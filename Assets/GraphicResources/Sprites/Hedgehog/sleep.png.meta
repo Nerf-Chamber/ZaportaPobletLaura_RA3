@@ -49,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -63,7 +63,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -118,7 +118,7 @@ TextureImporter:
         x: 0
         y: 0
         width: 24
-        height: 13
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,7 +140,7 @@ TextureImporter:
         x: 24
         y: 0
         width: 24
-        height: 14
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,7 +162,7 @@ TextureImporter:
         x: 48
         y: 0
         width: 24
-        height: 18
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,7 +184,7 @@ TextureImporter:
         x: 72
         y: 0
         width: 24
-        height: 18
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -199,33 +199,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: sleep_4
-      rect:
-        serializedVersion: 2
-        x: 83
-        y: 13
-        width: 6
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: da4cf548b1952c140800000000000000
-      internalID: 4738447732667040941
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 0ffb85f2f2fbdc94bbfcc17a5edb1e6d
     internalID: 0
     vertices: []
     indices: 
@@ -239,7 +217,6 @@ TextureImporter:
       sleep_1: 1521750420146566156
       sleep_2: -7199076392672705632
       sleep_3: -4365704921970394059
-      sleep_4: 4738447732667040941
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

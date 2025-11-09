@@ -2,45 +2,60 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] private float timeRunning;
-    [SerializeField] private float timeSleeping;
+    [SerializeField] private float timeRunning = 2f;
+    [SerializeField] private float timeSleeping = 2f;
 
-    public bool isSleeping;
+    private bool isSleeping;
+    private float currentDirection = 1f;
 
-    public void Start()
+    override protected void Awake()
     {
-        RandomJump();
-        isSleeping = false;
+        base.Awake();
+        isFacingRight = transform.localScale.x == 1;
     }
 
-    // Cycle -> Sleep() -> onMoveDirection.x = isFacingRight ? 1 : -1; Run()
+    private void Start()
+    {
+        // Sleep - Run Cycle
+        Sleep();
+        RandomJump();
+    }
+
+    private void Update()
+    {
+        _move.MoveX(currentDirection, speed);
+        if (GetDidHitHorizontal(0.7f, isFacingRight)) { currentDirection *= -1; }
+
+        if (!isFacingRight && currentDirection > 0) { _animation.FlipX(ref isFacingRight); }
+        else if (isFacingRight && currentDirection < 0) { _animation.FlipX(ref isFacingRight); }
+    }
 
     private void RandomJump()
     {
         if (GetIsGrounded(0.7f) && !isSleeping)
         {
-            int random = Random.Range(0, 1);
-
-            if (random == 0) { _jump.Jump(150f); }
-            else { _animation.FlipY(); _jump.InvertGravity(); }
+            _jump.Jump(150f);
         }
 
-        float randomTimeToWait = Random.Range(5f, 10f);
-        Invoke("RandomJump", randomTimeToWait);
+        float randomTimeToWait = Random.Range(1f, 4f);
+        Invoke(nameof(RandomJump), randomTimeToWait);
     }
+
     private void Run()
     {
         isSleeping = false;
-        if (GetDidHitHorizontal(0.7f, isFacingRight)) { onMoveDirection *= -1; }
+        currentDirection = isFacingRight ? 1f : -1f;
+        _animation.SetSleepState(isSleeping);
 
-        _move.MoveX(onMoveDirection.x, speed);
-        if (!isFacingRight && onMoveDirection.x > 0) { _animation.FlipX(ref isFacingRight); }
-        else if (isFacingRight && onMoveDirection.x < 0) { _animation.FlipX(ref isFacingRight); }
+        Invoke(nameof(Sleep), timeRunning);
     }
+
     private void Sleep()
     {
         isSleeping = true;
-        onMoveDirection = Vector2.zero;
-        // Code animation hedgehog sleeping
+        currentDirection = 0;
+        _animation.SetSleepState(isSleeping);
+
+        Invoke(nameof(Run), timeSleeping);
     }
 }

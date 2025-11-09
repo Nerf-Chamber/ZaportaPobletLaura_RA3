@@ -22,8 +22,6 @@ public abstract class Character : MonoBehaviour
         _move = GetComponent<MoveBehaviour>();
         _animation = GetComponent<AnimationBehaviour>();
         _jump = GetComponent<JumpBehaviour>();
-
-        isFacingRight = transform.localScale.x == 1;
     }
 
     protected bool GetIsGrounded(float raycastDistance)
@@ -35,6 +33,8 @@ public abstract class Character : MonoBehaviour
     }
     protected bool GetDidHitHorizontal(float raycastDistance, bool rightCheck)
     {
-        return rightCheck ? Physics2D.Raycast(transform.position, Vector2.right, raycastDistance) : Physics2D.Raycast(transform.position, Vector2.left, raycastDistance);
+        return rightCheck 
+            ? Physics2D.Raycast(transform.position, Vector2.right, raycastDistance, LayerMask.GetMask("Terrain")) 
+            : Physics2D.Raycast(transform.position, Vector2.left, raycastDistance, LayerMask.GetMask("Terrain"));
     }
 }

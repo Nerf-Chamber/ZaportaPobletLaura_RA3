@@ -36,4 +36,8 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("isDead", isDead);
     }
+    public void SetSleepState(bool isSleeping)
+    {
+        _an.SetBool("isSleeping", isSleeping);
+    }
 }

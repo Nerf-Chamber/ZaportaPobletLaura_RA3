@@ -16,6 +16,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         base.Awake();
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
+        isFacingRight = true;
     }
 
     private void OnEnable() => inputActions.Enable();
