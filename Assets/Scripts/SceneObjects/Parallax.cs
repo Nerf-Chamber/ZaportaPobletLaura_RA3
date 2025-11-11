@@ -55,7 +55,7 @@ public class Parallax : MonoBehaviour
     {
         distance = player.transform.position.x - startPos.x;
 
-        transform.position = new Vector3(player.transform.position.x - 1, transform.position.y, transform.position.z);
+        transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
 
         for (int i = 0; i < backgrounds.Length; i++)
         {

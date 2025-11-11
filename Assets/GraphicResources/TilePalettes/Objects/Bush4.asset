@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Bush2
+  m_Name: Bush4
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 6937817954938267909, guid: fccd00fb509866141abacd45e4281c1a, type: 3}
+  m_Sprite: {fileID: -4178046375966092550, guid: 132c7e8c84835ca45b9131230e996e4c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
