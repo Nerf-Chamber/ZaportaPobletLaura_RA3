@@ -28,7 +28,8 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         {
             {(CameraLocations.StageOne, CameraLocations.StageTwo), false},
             {(CameraLocations.StageTwo, CameraLocations.StageThree), false},
-            {(CameraLocations.StageThree, CameraLocations.StageFour), false}
+            {(CameraLocations.StageThree, CameraLocations.StageFour), false},
+            {(CameraLocations.StageFour, CameraLocations.StageOne), false}
         };
     }
 
@@ -88,6 +89,9 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
                 break;
             case int layer when layer == LayerMask.NameToLayer("CameraChangeThree"):
                 locations = (CameraLocations.StageThree, CameraLocations.StageFour);
+                break;
+            case int layer when layer == LayerMask.NameToLayer("CameraChangeFour"):
+                locations = (CameraLocations.StageFour, CameraLocations.StageOne);
                 break;
             default:
                 return;
