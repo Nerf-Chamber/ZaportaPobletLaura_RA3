@@ -47,8 +47,14 @@ TagManager:
   - name: DecorativeObjects
     uniqueID: 963287015
     locked: 0
-  - name: Characters
+  - name: Projectiles
     uniqueID: 3111434631
+    locked: 0
+  - name: ProjectilesOrigin
+    uniqueID: 173713753
+    locked: 0
+  - name: Characters
+    uniqueID: 1016170503
     locked: 0
   m_RenderingLayers:
   - Default

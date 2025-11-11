@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Apple : CollectableObject
 {
-    void Start()
+    private void Awake()
     {
-        startPos = transform.position;
+        firstGoUp = true;
     }
 }

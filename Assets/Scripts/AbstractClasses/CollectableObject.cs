@@ -6,18 +6,29 @@ public abstract class CollectableObject : MonoBehaviour
     public float floatFrequency = 1f;
 
     protected Vector3 startPos;
+    protected bool firstGoUp;
     private bool collected = false;
 
-    protected void FloatUpDown()
+    private void Start()
     {
-        float newY = startPos.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
+        startPos = transform.position;
+    }
+    protected void FloatUpDown(bool firstGoUp)
+    {
+        float newY = firstGoUp 
+            ? startPos.y + Mathf.Sin(Time.time * floatFrequency) * floatAmplitude 
+            : startPos.y - Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
         transform.position = new Vector3(startPos.x, newY, startPos.z);
+    }
+    protected void Collected()
+    {
+        // TODO
     }
     void Update()
     {
         if (!collected)
         {
-            FloatUpDown();
+            FloatUpDown(firstGoUp);
         }
     }
 }
