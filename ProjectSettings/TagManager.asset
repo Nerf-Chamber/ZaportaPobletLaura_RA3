@@ -41,13 +41,22 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Parallax_1
+    uniqueID: 383361081
+    locked: 0
+  - name: Parallax_2
+    uniqueID: 476360519
+    locked: 0
+  - name: Parallax_3
+    uniqueID: 1880315177
+    locked: 0
   - name: Background
     uniqueID: 3232523223
     locked: 0
   - name: DecorativeObjects
     uniqueID: 963287015
     locked: 0
-  - name: Projectiles
+  - name: Threats
     uniqueID: 3111434631
     locked: 0
   - name: ProjectilesOrigin
