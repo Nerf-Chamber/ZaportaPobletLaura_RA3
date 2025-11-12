@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AudioClips { }
+public enum AudioClips 
+{ 
+    MainTheme
+}
 
 public class AudioManager : MonoBehaviour
 {
@@ -13,5 +16,6 @@ public class AudioManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        clipList.Add(AudioClips.MainTheme, audioClips[0]);
     }
 }
