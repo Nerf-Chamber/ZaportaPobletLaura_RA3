@@ -1508,6 +1508,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin
       objectReference: {fileID: 0}
+    - target: {fileID: 2839409805524446401, guid: b407d95dfb033cf4b994a206b8713940, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4862007459847594908, guid: 461ee96ef036d0445a838dcf50a6f5cc, type: 3}
     - target: {fileID: 3990894962418890168, guid: b407d95dfb033cf4b994a206b8713940, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.5
@@ -7821,7 +7825,7 @@ Transform:
   m_GameObject: {fileID: 1528002038}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.6370735, y: -5.1791263, z: 0.06115605}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8002,6 +8006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - {fileID: 8300000, guid: d3598653a47d6a34ea6956f89ecb46cc, type: 3}
+  - {fileID: 8300000, guid: 568374dca33f33c479edc5aca57b0605, type: 3}
 --- !u!4 &1612429093
 Transform:
   m_ObjectHideFlags: 0
@@ -8267,6 +8272,7 @@ MonoBehaviour:
   _jump: {fileID: 0}
   speed: 3
   isDead: 0
+  coinsCollected: 0
 --- !u!114 &1662108428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10581,7 +10587,7 @@ TilemapRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0.0026316047, y: 0.0026316047, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0

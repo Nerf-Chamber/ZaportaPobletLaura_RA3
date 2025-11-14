@@ -40,4 +40,8 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("isSleeping", isSleeping);
     }
+    public void SetCollectedState(bool isCollected)
+    {
+        _an.SetBool("isCollected", isCollected);
+    }
 }

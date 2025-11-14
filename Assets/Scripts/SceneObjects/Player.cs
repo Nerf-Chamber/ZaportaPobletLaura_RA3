@@ -69,26 +69,17 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead)
         {
-            // isDead = true;
-            // _animation.SetDeathState(true);
-            // _jump.Jump(175f);
-            // inputActions.Disable();
             Debug.Log("Death");
         }
-        if (collision.transform.TryGetComponent<ICollectable>(out ICollectable iCollected) && canCollectCoins)
-        {
-            iCollected.Collected();
-            if (iCollected is Coin coin)
-            {
-                coinsCollected++;
-                canCollectCoins = false;
-                Invoke(nameof(CanCollectAgain), 0.2f);
-            }
-        }
     }
-    private void CanCollectAgain() { canCollectCoins = true; }
 
     public void OnTriggerEnter2D(Collider2D collision)
+    {
+        CameraChangesCollision(collision);
+        CollectableCollision(collision);
+    }
+
+    private void CameraChangesCollision(Collider2D collision)
     {
         if (!canCameraChange) return;
 
@@ -118,7 +109,6 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             cameraChangeStates[locations] = didCameraChange;
         }
     }
-
     // IEnumerator type return for coroutine
     private IEnumerator CameraChangeCooldown(float delay)
     {
@@ -136,4 +126,19 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         // Coroutine: Special type of function that can be paused and resumed later. Concurrency and multitasking :D
         StartCoroutine(CameraChangeCooldown(0.5f));
     }
+
+    private void CollectableCollision(Collider2D collision)
+    {
+        if (collision.transform.TryGetComponent<ICollectable>(out ICollectable iCollected) && canCollectCoins)
+        {
+            iCollected.Collected();
+            if (iCollected is Coin coin)
+            {
+                coinsCollected++;
+                canCollectCoins = false;
+                Invoke(nameof(CanCollectAgain), 0.2f);
+            }
+        }
+    }
+    private void CanCollectAgain() { canCollectCoins = true; }
 }

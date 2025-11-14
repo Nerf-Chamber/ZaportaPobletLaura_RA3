@@ -3,7 +3,8 @@ using UnityEngine;
 
 public enum AudioClips 
 { 
-    MainTheme
+    MainTheme,
+    CoinSound
 }
 
 public class AudioManager : MonoBehaviour
@@ -17,5 +18,6 @@ public class AudioManager : MonoBehaviour
     {
         Instance = this;
         clipList.Add(AudioClips.MainTheme, audioClips[0]);
+        clipList.Add(AudioClips.CoinSound, audioClips[1]);
     }
 }

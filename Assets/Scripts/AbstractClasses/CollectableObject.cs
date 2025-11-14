@@ -7,7 +7,7 @@ public abstract class CollectableObject : MonoBehaviour
 
     protected Vector3 startPos;
     protected bool firstGoUp;
-    private bool collected = false;
+    protected bool isCollected = false;
 
     private void Start()
     {
@@ -20,13 +20,10 @@ public abstract class CollectableObject : MonoBehaviour
             : startPos.y - Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
         transform.position = new Vector3(startPos.x, newY, startPos.z);
     }
-    public virtual void Collected()
-    {
-        // TODO
-    }
+    public virtual void Collected() { }
     void Update()
     {
-        if (!collected)
+        if (!isCollected)
         {
             FloatUpDown(firstGoUp);
         }
