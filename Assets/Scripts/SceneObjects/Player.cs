@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
+    private AudioClip clip;
+
     private InputSystem_Actions inputActions;
     private Dictionary<(CameraLocations, CameraLocations), bool> cameraChangeStates;
 
@@ -70,6 +72,15 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead)
         {
             Debug.Log("Death");
+        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("BouncyTerrain"))
+        {
+            if (AudioManager.Instance.clipList.TryGetValue(AudioClips.BouncySound, out clip))
+            {
+                AudioSource audioSource = GetComponent<AudioSource>();
+                audioSource.clip = clip;
+                audioSource.Play();
+            }
         }
     }
 
