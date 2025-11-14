@@ -20,7 +20,7 @@ public abstract class CollectableObject : MonoBehaviour
             : startPos.y - Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
         transform.position = new Vector3(startPos.x, newY, startPos.z);
     }
-    protected void Collected()
+    public virtual void Collected()
     {
         // TODO
     }

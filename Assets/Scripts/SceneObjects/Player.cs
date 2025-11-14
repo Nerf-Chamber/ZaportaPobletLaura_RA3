@@ -11,6 +11,9 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private bool canCameraChange = true;
     public bool isDead = false;
 
+    private bool canCollectCoins = true;
+    public int coinsCollected = 0;
+
     override protected void Awake()
     {
         base.Awake();
@@ -66,12 +69,24 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead)
         {
-            isDead = true;
-            _animation.SetDeathState(true);
-            _jump.Jump(175f);
-            inputActions.Disable();
+            // isDead = true;
+            // _animation.SetDeathState(true);
+            // _jump.Jump(175f);
+            // inputActions.Disable();
+            Debug.Log("Death");
+        }
+        if (collision.transform.TryGetComponent<ICollectable>(out ICollectable iCollected) && canCollectCoins)
+        {
+            iCollected.Collected();
+            if (iCollected is Coin coin)
+            {
+                coinsCollected++;
+                canCollectCoins = false;
+                Invoke(nameof(CanCollectAgain), 0.2f);
+            }
         }
     }
+    private void CanCollectAgain() { canCollectCoins = true; }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
