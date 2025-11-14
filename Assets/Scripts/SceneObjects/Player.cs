@@ -16,6 +16,8 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private bool canCollectCoins = true;
     public int coinsCollected = 0;
 
+    private bool enteredFinalZone = false;
+
     override protected void Awake()
     {
         base.Awake();
@@ -69,10 +71,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead)
-        {
-            Debug.Log("Death");
-        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead) { Loose(); }
         if (collision.gameObject.layer == LayerMask.NameToLayer("BouncyTerrain"))
         {
             if (AudioManager.Instance.clipList.TryGetValue(AudioClips.BouncySound, out clip))
@@ -88,8 +87,19 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         CameraChangesCollision(collision);
         CollectableCollision(collision);
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("FinalZone") && !enteredFinalZone)
+        {
+            enteredFinalZone = true;
+            EnterFinalZone();
+        }
     }
 
+    private void EnterFinalZone()
+    {
+        if (coinsCollected == 8) { Win(); }
+        else { Loose(); }
+    }
     private void CameraChangesCollision(Collider2D collision)
     {
         if (!canCameraChange) return;
@@ -152,4 +162,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         }
     }
     private void CanCollectAgain() { canCollectCoins = true; }
+
+    private void Win() => Debug.Log("You won!");
+    private void Loose() => Debug.Log("You died!");
 }
