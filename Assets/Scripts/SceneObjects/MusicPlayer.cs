@@ -6,8 +6,16 @@ public class MusicPlayer : MonoBehaviour
 
     private void Awake() { audioSource = GetComponent<AudioSource>(); }
 
-    private void OnEnable() { PauseMenu.OnPauseStateChanged += HandlePauseState; }
-    private void OnDisable() { PauseMenu.OnPauseStateChanged -= HandlePauseState; }
+    private void OnEnable()
+    {
+        PauseMenu.OnPauseStateChanged += HandlePauseState;
+        PauseMenu.OnRestartChosen += HandleRestart;
+    }
+    private void OnDisable()
+    {
+        PauseMenu.OnPauseStateChanged -= HandlePauseState;
+        PauseMenu.OnRestartChosen -= HandleRestart;
+    }
 
     private void Start()
     {
@@ -22,5 +30,11 @@ public class MusicPlayer : MonoBehaviour
     {
         if (isPaused) audioSource.Pause();
         else audioSource.UnPause();
+    }
+    private void HandleRestart()
+    {
+        audioSource.Stop();
+        audioSource.time = 0f;
+        audioSource.Play();
     }
 }
