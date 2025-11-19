@@ -6,24 +6,28 @@ using UnityEngine.InputSystem;
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
     private AudioClip clip;
-
     private InputSystem_Actions inputActions;
     private Dictionary<(CameraLocations, CameraLocations), bool> cameraChangeStates;
-
     private bool canCameraChange = true;
+    private bool enteredFinalZone = false;
+
+    public Vector2 initialPosition;
+
     public bool isDead = false;
 
     private bool canCollectCoins = true;
     public int coinsCollected = 0;
-
-    private bool enteredFinalZone = false;
 
     override protected void Awake()
     {
         base.Awake();
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
+        initialPosition = transform.position;
         isFacingRight = true;
+
+        PauseMenu.OnPauseStateChanged += HandlePauseStateChanged;
+        PauseMenu.OnRestartChosen += RestartPlayer;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -165,4 +169,22 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     private void Win() => Debug.Log("You won!");
     private void Loose() => Debug.Log("You died!");
+
+    private void HandlePauseStateChanged(bool isPaused)
+    {
+        if (isPaused) inputActions.Player.Disable();
+        else inputActions.Player.Enable();
+    }
+    private void RestartPlayer()
+    {
+        transform.position = initialPosition;
+        if (transform.localScale.x < 0) { _animation.FlipX(ref isFacingRight); }
+        coinsCollected = 0;
+        ResetCameraValues();
+    }
+    private void ResetCameraValues()
+    {
+        var keys = new List<(CameraLocations, CameraLocations)>(cameraChangeStates.Keys);
+        foreach (var key in keys) { cameraChangeStates[key] = false; }
+    }
 }

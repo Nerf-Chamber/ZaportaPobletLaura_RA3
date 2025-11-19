@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,9 @@ public class PauseMenu : MonoBehaviour, InputSystem_Actions.IUIActions
 
     public static bool GamePaused = false;
     public GameObject PauseMenuUI;
+
+    public static event Action<bool> OnPauseStateChanged;
+    public static event Action OnRestartChosen;
 
     private void Awake()
     {
@@ -25,11 +29,18 @@ public class PauseMenu : MonoBehaviour, InputSystem_Actions.IUIActions
         else Pause();
     }
 
-    private void Resume() 
+    public void Resume() 
     {
         PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GamePaused = false;
+        OnPauseStateChanged?.Invoke(false);
+    }
+    public void Exit() { Application.Quit(); }
+    public void Restart() 
+    { 
+        OnRestartChosen.Invoke();
+        Resume();
     }
 
     private void Pause() 
@@ -37,5 +48,6 @@ public class PauseMenu : MonoBehaviour, InputSystem_Actions.IUIActions
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GamePaused = true;
+        OnPauseStateChanged.Invoke(true);
     }
 }
