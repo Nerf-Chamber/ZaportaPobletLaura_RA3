@@ -86,7 +86,6 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             }
         }
     }
-
     public void OnTriggerEnter2D(Collider2D collision)
     {
         CameraChangesCollision(collision);
@@ -177,6 +176,11 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     private void RestartPlayer()
     {
+        if (transform.localScale.y < 0)
+        {
+            _jump.InvertGravity();
+            _animation.FlipY();
+        }
         transform.position = initialPosition;
         if (transform.localScale.x < 0) { _animation.FlipX(ref isFacingRight); }
         coinsCollected = 0;

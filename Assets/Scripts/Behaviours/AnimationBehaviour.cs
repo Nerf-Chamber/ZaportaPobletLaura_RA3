@@ -44,4 +44,12 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("isCollected", isCollected);
     }
+    public void SetCollisionTerrainState(bool collided)
+    {
+        _an.SetBool("collisionTerrain", collided);
+    }
+    public void SetCollisionPlayerState(bool collided)
+    {
+        _an.SetBool("collisionPlayer", collided);
+    }
 }

@@ -12,23 +12,15 @@ public class Bullet : MonoBehaviour, ISpawnable
     public Spawner spawner { get; set; }
 
     private void Awake() => _animation = GetComponent<AnimationBehaviour>();
-    private void Start() => getBulletDirection();
+    private void Start() => GetBulletDirection();
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-            // Green explosion
-            spawner.Push(gameObject);
-        }
-        else if (didCollideWithTerrainProperly())
-        {
-            // Red explosion
-            spawner.Push(gameObject);
-        }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) { _animation.SetCollisionPlayerState(true); }
+        else if (DidCollideWithTerrainProperly()) { _animation.SetCollisionTerrainState(true); }
     }
 
-    private void getBulletDirection()
+    private void GetBulletDirection()
     {
         Quaternion rotation = transform.rotation;
 
@@ -37,9 +29,17 @@ public class Bullet : MonoBehaviour, ISpawnable
         collisionTerrainDirection = new Vector2(-Mathf.Sin(angle), Mathf.Cos(angle));
         if (collisionTerrainDirection.x > 0) {_animation.FlipX(); }
     }
-    private bool didCollideWithTerrainProperly()
+    private bool DidCollideWithTerrainProperly()
     {
         float raycastDistance = 0.7f;
         return Physics2D.Raycast(transform.position, collisionTerrainDirection, raycastDistance, LayerMask.GetMask("Terrain"));
+    }
+    private void WhenExplosionAnimationStarts() { GetComponent<BoxCollider2D>().enabled = false; }
+    private void WhenBulletAnimationStarts() { GetComponent<BoxCollider2D>().enabled = true; }
+    private void WhenExplosionAnimationEnds()
+    {
+        _animation.SetCollisionTerrainState(false);
+        _animation.SetCollisionPlayerState(false);
+        spawner.Push(gameObject);
     }
 }
