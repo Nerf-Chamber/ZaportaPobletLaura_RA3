@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationBehaviour))]
@@ -7,10 +8,14 @@ public class Coin : CollectableObject, ICollectable
     private AnimationBehaviour _animation;
     private AudioClip clip;
 
+    private Vector2 initialPosition;
+
     private void Awake()
     {
         firstGoUp = false;
+        initialPosition = transform.position;
         _animation = GetComponent<AnimationBehaviour>();
+        PauseMenu.OnRestartChosen += ReenableCoin;
     }
 
     public override void Collected()
@@ -29,5 +34,13 @@ public class Coin : CollectableObject, ICollectable
         }
     }
 
-    public void CollectedAnimationEnded() { Destroy(gameObject); }
+    public void ReenableCoin()
+    {
+        isCollected = false;
+        _animation.SetCollectedState(isCollected);
+        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        transform.position = initialPosition;
+    }
+    private void CollectedAnimationEnded() { GetComponent<SpriteRenderer>().enabled = false; }
 }

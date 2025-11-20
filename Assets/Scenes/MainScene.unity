@@ -674,6 +674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 226317253}
+  - component: {fileID: 226317254}
   m_Layer: 0
   m_Name: Coins
   m_TagString: Untagged
@@ -704,6 +705,28 @@ Transform:
   - {fileID: 630589316}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &226317254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 226317252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35374c589971b9d46bed9ac288135891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coin: {fileID: 2052576247302517104, guid: b407d95dfb033cf4b994a206b8713940, type: 3}
+  coinsPositions:
+  - {x: -5.5, y: -3.5}
+  - {x: -0.5, y: -1.5}
+  - {x: -6.5, y: -8.5}
+  - {x: -5.5, y: -6.5}
+  - {x: 31.5, y: -13.5}
+  - {x: 29.5, y: -9.5}
+  - {x: 18.5, y: 2.5}
+  - {x: 28.5, y: 2.5}
 --- !u!1 &255276629
 GameObject:
   m_ObjectHideFlags: 0
@@ -9448,7 +9471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9607843}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
