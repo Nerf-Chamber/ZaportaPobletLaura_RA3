@@ -7,7 +7,8 @@ public enum AudioClips
     MainTheme,
     CoinSound,
     BouncySound,
-    DeadSound
+    DeadSound,
+    MainMenuMiniTheme
 }
 
 public class AudioManager : MonoBehaviour
@@ -24,6 +25,7 @@ public class AudioManager : MonoBehaviour
         clipList.Add(AudioClips.CoinSound, audioClips[1]);
         clipList.Add(AudioClips.BouncySound, audioClips[2]);
         clipList.Add(AudioClips.DeadSound, audioClips[3]);
+        clipList.Add(AudioClips.MainMenuMiniTheme, audioClips[4]);
     }
 
     public static void PlaySound(AudioSource audioSource, AudioClip clip, AudioClips sound)

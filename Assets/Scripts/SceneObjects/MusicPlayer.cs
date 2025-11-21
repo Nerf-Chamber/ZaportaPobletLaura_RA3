@@ -20,7 +20,7 @@ public class MusicPlayer : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.PlaySound(audioSource, clip, AudioClips.MainTheme);
+        AudioManager.PlaySound(audioSource, clip, AudioClips.MainMenuMiniTheme);
     }
 
     private void HandlePauseState(bool isPaused)
@@ -30,6 +30,12 @@ public class MusicPlayer : MonoBehaviour
     }
     private void HandleRestart()
     {
+        if (!MainMenu.GameStarted) 
+        {
+            audioSource.loop = true;
+            AudioManager.PlaySound(audioSource, clip, AudioClips.MainTheme); 
+            MainMenu.GameStarted = true;
+        }
         audioSource.Stop();
         audioSource.time = 0f;
         audioSource.Play();
