@@ -13,10 +13,16 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
     public Vector2 initialPosition;
 
-    public bool isDead = false;
+    public static bool isDead = false;
+    public static bool didWin = false;
 
     private bool canCollectCoins = true;
     public int coinsCollected = 0;
+
+    private AudioSource audioSource;
+    private BoxCollider2D boxCollider;
+    private Rigidbody2D rigidBody;
+    private SpriteRenderer spriteRenderer;
 
     override protected void Awake()
     {
@@ -26,8 +32,13 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         initialPosition = transform.position;
         isFacingRight = true;
 
-        PauseMenu.OnPauseStateChanged += HandlePauseStateChanged;
-        PauseMenu.OnRestartChosen += RestartPlayer;
+        boxCollider = GetComponent<BoxCollider2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        BaseMenu.OnPauseStateChanged += HandlePauseStateChanged;
+        BaseMenu.OnRestartChosen += RestartPlayer;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -54,16 +65,11 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         _animation.SetRunState(isMovingX);
     }
 
+    // ----- MOVEMENT -----
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed || context.started)
-        {
-            onMoveDirection = context.ReadValue<Vector2>();
-        } 
-        else if (context.canceled)
-        {
-            onMoveDirection = Vector2.zero;
-        }
+        if (context.performed || context.started) { onMoveDirection = context.ReadValue<Vector2>(); } 
+        else if (context.canceled) { onMoveDirection = Vector2.zero; }
     }
     public void OnJump(InputAction.CallbackContext context)
     {
@@ -73,17 +79,13 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             _jump.InvertGravity();
         }
     }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Threat") && !isDead) { Loose(); }
         if (collision.gameObject.layer == LayerMask.NameToLayer("BouncyTerrain"))
         {
-            if (AudioManager.Instance.clipList.TryGetValue(AudioClips.BouncySound, out clip))
-            {
-                AudioSource audioSource = GetComponent<AudioSource>();
-                audioSource.clip = clip;
-                audioSource.Play();
-            }
+            AudioManager.PlaySound(audioSource, clip, AudioClips.BouncySound);
         }
     }
     public void OnTriggerEnter2D(Collider2D collision)
@@ -97,11 +99,10 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
             EnterFinalZone();
         }
     }
-
     private void EnterFinalZone()
     {
         if (coinsCollected == 8) { Win(); }
-        else { Loose(); }
+        else { LooseAsASoup(); }
     }
     private void CameraChangesCollision(Collider2D collision)
     {
@@ -166,9 +167,39 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     private void CanCollectAgain() { canCollectCoins = true; }
 
-    private void Win() => Debug.Log("You won!");
-    private void Loose() => Debug.Log("You died!");
+    private void Win()
+    {
+        Debug.Log("You won!");
+        didWin = true;
+    }
+    private void Loose()
+    {
+        inputActions.Disable();
+        boxCollider.enabled = false;
+        rigidBody.bodyType = RigidbodyType2D.Static;
+        _animation.SetDeadState(true);
 
+        AudioManager.PlaySound(audioSource, clip, AudioClips.DeadSound);
+    }
+    private void LooseAsASoup()
+    {
+        inputActions.Disable();
+        _jump.Jump(750f);
+        _animation.SetDeadSoupState(true);
+        // Quan s'acabés el diàleg de la poma game over xd
+    }
+    private void ActivateGameOverMenu() 
+    {
+        spriteRenderer.enabled = false;
+        StartCoroutine(DeadDelay(0.2f));
+    }
+    private IEnumerator DeadDelay(float delay) 
+    {
+        yield return new WaitForSeconds(delay);
+        isDead = true;
+    }
+
+    // ----- DELEGATES -----
     private void HandlePauseStateChanged(bool isPaused)
     {
         if (isPaused) inputActions.Player.Disable();
@@ -176,6 +207,18 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     private void RestartPlayer()
     {
+        inputActions.Enable();
+
+        isDead = false;
+        didWin = false;
+
+        boxCollider.enabled = true;
+        spriteRenderer.enabled = true;
+        rigidBody.bodyType = RigidbodyType2D.Dynamic;
+
+        _animation.SetDeadState(false);
+        _animation.SetDeadSoupState(false);
+
         if (transform.localScale.y < 0)
         {
             _jump.InvertGravity();
@@ -183,6 +226,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         }
         transform.position = initialPosition;
         if (transform.localScale.x < 0) { _animation.FlipX(ref isFacingRight); }
+
         coinsCollected = 0;
         ResetCameraValues();
     }
@@ -190,5 +234,6 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     {
         var keys = new List<(CameraLocations, CameraLocations)>(cameraChangeStates.Keys);
         foreach (var key in keys) { cameraChangeStates[key] = false; }
+        CameraManager.Instance.ChangeStage(CameraLocations.StageOne);
     }
 }

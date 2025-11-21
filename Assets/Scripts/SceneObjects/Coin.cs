@@ -1,11 +1,12 @@
-using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [RequireComponent(typeof(AnimationBehaviour))]
 
 public class Coin : CollectableObject, ICollectable
 {
     private AnimationBehaviour _animation;
+    private AudioSource audioSource;
     private AudioClip clip;
 
     private Vector2 initialPosition;
@@ -15,32 +16,28 @@ public class Coin : CollectableObject, ICollectable
         firstGoUp = false;
         initialPosition = transform.position;
         _animation = GetComponent<AnimationBehaviour>();
-        PauseMenu.OnRestartChosen += ReenableCoin;
+        audioSource = GetComponent<AudioSource>();
+        BaseMenu.OnRestartChosen += ReenableCoin;
     }
 
     public override void Collected()
     {
         isCollected = true;
-
         GetComponent<BoxCollider2D>().enabled = false;
-
         _animation.SetCollectedState(isCollected);
-
-        if (AudioManager.Instance.clipList.TryGetValue(AudioClips.CoinSound, out clip))
-        {
-            AudioSource audioSource = GetComponent<AudioSource>();
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
+        AudioManager.PlaySound(audioSource, clip, AudioClips.CoinSound);
     }
 
     public void ReenableCoin()
     {
-        isCollected = false;
-        _animation.SetCollectedState(isCollected);
-        GetComponent<BoxCollider2D>().enabled = true;
-        GetComponent<SpriteRenderer>().enabled = true;
-        transform.position = initialPosition;
+        if (isCollected)
+        {
+            isCollected = false;
+            _animation.SetCollectedState(isCollected);
+            GetComponent<BoxCollider2D>().enabled = true;
+            GetComponent<SpriteRenderer>().enabled = true;
+            transform.position = initialPosition;
+        }
     }
     private void CollectedAnimationEnded() { GetComponent<SpriteRenderer>().enabled = false; }
 }

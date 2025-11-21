@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a37418f02c7dc684f9165f01c59bad89
+guid: fd1833082fff52848aeddf34244988e2
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,10 +9,10 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Pixelade
+  - Square Pixel7
   fallbackFontReferences: []
   customCharacters: 
-  fontRenderingMode: 3
+  fontRenderingMode: 0
   ascentCalculationMode: 1
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1

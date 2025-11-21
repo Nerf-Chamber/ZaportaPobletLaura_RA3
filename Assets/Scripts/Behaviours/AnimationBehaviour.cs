@@ -52,4 +52,12 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("collisionPlayer", collided);
     }
+    public void SetDeadState(bool dead)
+    {
+        _an.SetBool("isDead", dead);
+    }
+    public void SetDeadSoupState(bool dead)
+    {
+        _an.SetBool("isDeadAsASoup", dead);
+    }
 }

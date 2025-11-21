@@ -36,6 +36,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject go = objectStack.Pop();
         go.SetActive(true);
+        go.transform.rotation = transform.parent.rotation;
         go.transform.position = transform.position;
         go.GetComponent<Rigidbody2D>().linearVelocity = objectDirection * objectSpeed;
         return go;

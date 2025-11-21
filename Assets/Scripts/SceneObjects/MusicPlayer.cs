@@ -3,27 +3,24 @@ using UnityEngine;
 public class MusicPlayer : MonoBehaviour
 {
     private AudioSource audioSource;
+    private AudioClip clip;
 
     private void Awake() { audioSource = GetComponent<AudioSource>(); }
 
     private void OnEnable()
     {
-        PauseMenu.OnPauseStateChanged += HandlePauseState;
-        PauseMenu.OnRestartChosen += HandleRestart;
+        BaseMenu.OnPauseStateChanged += HandlePauseState;
+        BaseMenu.OnRestartChosen += HandleRestart;
     }
     private void OnDisable()
     {
-        PauseMenu.OnPauseStateChanged -= HandlePauseState;
-        PauseMenu.OnRestartChosen -= HandleRestart;
+        BaseMenu.OnPauseStateChanged -= HandlePauseState;
+        BaseMenu.OnRestartChosen -= HandleRestart;
     }
 
     private void Start()
     {
-        if (AudioManager.Instance.clipList.TryGetValue(AudioClips.MainTheme, out AudioClip clip))
-        {
-            audioSource.clip = clip;
-            audioSource.Play();
-        }
+        AudioManager.PlaySound(audioSource, clip, AudioClips.MainTheme);
     }
 
     private void HandlePauseState(bool isPaused)
