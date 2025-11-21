@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -124,6 +125,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private void Win()
     {
         Debug.Log("You won!");
+        AudioManager.PlaySound(audioSource, clip, AudioClips.WinSound);
         didWin = true;
     }
     private void Loose()
@@ -150,6 +152,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private IEnumerator DeadDelay(float delay) 
     {
         yield return new WaitForSeconds(delay);
+        AudioManager.PlaySound(audioSource, clip, AudioClips.LooseSound);
         isDead = true;
     }
 

@@ -25,7 +25,7 @@ public class MusicPlayer : MonoBehaviour
 
     private void HandlePauseState(bool isPaused)
     {
-        if (isPaused) audioSource.Pause();
+        if (isPaused && (!Player.isDead || !Player.didWin)) audioSource.Pause();
         else audioSource.UnPause();
     }
     private void HandleRestart()
