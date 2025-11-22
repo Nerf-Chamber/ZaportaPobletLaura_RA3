@@ -21,4 +21,7 @@ public class PauseMenu : BaseMenu, InputSystem_Actions.IUIActions
         if (isActive) HideMenu();
         else ShowMenu();
     }
+
+    // Not needed here
+    void InputSystem_Actions.IUIActions.OnInteract(InputAction.CallbackContext context) { }
 }

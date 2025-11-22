@@ -5,14 +5,17 @@ using UnityEngine.InputSystem;
 
 public class Player : Character, InputSystem_Actions.IPlayerActions
 {
+    public const int coinsToCollect = 8;
+
     private AudioClip clip;
     private InputSystem_Actions inputActions;
-    private bool enteredFinalZone = false;
 
     public Vector2 initialPosition;
 
     public static bool isDead = false;
+    public static bool isDeadAsASoup = false;
     public static bool didWin = false;
+    public bool didReachTheEnd = false;
 
     public float limitChangeCameraX;
     public float limitChangeCameraY;
@@ -24,6 +27,9 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     private BoxCollider2D boxCollider;
     private Rigidbody2D rigidBody;
     private SpriteRenderer spriteRenderer;
+
+    public static event Action OnIntroDialogueTriggered;
+    public static event Action OnEndDialogueTriggered;
 
     override protected void Awake()
     {
@@ -40,6 +46,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
         BaseMenu.OnPauseStateChanged += HandlePauseStateChanged;
         BaseMenu.OnRestartChosen += RestartPlayer;
+        Dialogue.OnIntroDialogueEnded += AllowMovement;
     }
 
     private void OnEnable() => inputActions.Enable();
@@ -71,7 +78,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     // ----- MOVEMENT -----
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed || context.started) { onMoveDirection = context.ReadValue<Vector2>(); } 
+        if (context.performed || context.started) { onMoveDirection = context.ReadValue<Vector2>(); }
         else if (context.canceled) { onMoveDirection = Vector2.zero; }
     }
     public void OnJump(InputAction.CallbackContext context)
@@ -94,19 +101,27 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     public void OnTriggerEnter2D(Collider2D collision)
     {
         CollectableCollision(collision);
+        DialogueCollision(collision);
+    }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("FinalZone") && !enteredFinalZone)
+    private void DialogueCollision(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("IntroDialogue") && !Dialogue.hasIntroHappened)
         {
-            enteredFinalZone = true;
-            EnterFinalZone();
+            inputActions.Disable();
+            OnIntroDialogueTriggered.Invoke();
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("EndDialogue") && !didReachTheEnd)
+        {
+            didReachTheEnd = true;
+
+            if (coinsCollected < coinsToCollect) LooseAsASoup();
+            else Win();
+
+            inputActions.Disable();
+            OnEndDialogueTriggered.Invoke();
         }
     }
-    private void EnterFinalZone()
-    {
-        if (coinsCollected == 8) { Win(); }
-        else { LooseAsASoup(); }
-    }
-
     private void CollectableCollision(Collider2D collision)
     {
         if (collision.transform.TryGetComponent<ICollectable>(out ICollectable iCollected) && canCollectCoins)
@@ -122,37 +137,33 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
     }
     private void CanCollectAgain() { canCollectCoins = true; }
 
-    private void Win()
-    {
-        Debug.Log("You won!");
-        AudioManager.PlaySound(audioSource, clip, AudioClips.WinSound);
-        didWin = true;
-    }
+    private void Win() => didWin = true;
     private void Loose()
     {
         inputActions.Disable();
         boxCollider.enabled = false;
         rigidBody.bodyType = RigidbodyType2D.Static;
+        AudioManager.PlaySound(audioSource, clip, AudioClips.DeadSound);
         _animation.SetDeadState(true);
 
-        AudioManager.PlaySound(audioSource, clip, AudioClips.DeadSound);
     }
     private void LooseAsASoup()
     {
+        isDeadAsASoup = true;
+
         inputActions.Disable();
         _jump.Jump(750f);
         _animation.SetDeadSoupState(true);
         // Quan s'acabés el diàleg de la poma game over xd
     }
-    private void ActivateGameOverMenu() 
+    private void ActivateGameOverMenu()
     {
         spriteRenderer.enabled = false;
         StartCoroutine(DeadDelay(0.2f));
     }
-    private IEnumerator DeadDelay(float delay) 
+    private IEnumerator DeadDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        AudioManager.PlaySound(audioSource, clip, AudioClips.LooseSound);
         isDead = true;
     }
 
@@ -188,4 +199,5 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
         ResetCameraValues();
     }
     private void ResetCameraValues() => CameraManager.Instance.ChangeStage(CameraLocations.StageOne);
+    private void AllowMovement() { if (!didWin && !isDead) { inputActions.Enable(); } }
 }

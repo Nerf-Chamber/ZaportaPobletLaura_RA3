@@ -60,4 +60,8 @@ public class AnimationBehaviour : MonoBehaviour
     {
         _an.SetBool("isDeadAsASoup", dead);
     }
+    public void SetAppleState(bool state)
+    {
+        _an.SetBool("isAppleFace", state);
+    }
 }
