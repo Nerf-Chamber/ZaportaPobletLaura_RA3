@@ -8,7 +8,13 @@ public class GameTitleAnimation : MonoBehaviour
     public float floatAmplitude;
     public float floatFrequency;
 
-    public float defaultYPosition = 200f;
+    public GameObject gameObjectPosReference;
+    private float defaultYPosition;
+
+    private void Awake()
+    {
+        defaultYPosition = gameObjectPosReference.transform.position.y;
+    }
 
     protected void FloatUpDown()
     {
