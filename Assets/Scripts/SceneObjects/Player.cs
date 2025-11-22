@@ -179,6 +179,7 @@ public class Player : Character, InputSystem_Actions.IPlayerActions
 
         isDead = false;
         didWin = false;
+        didReachTheEnd = false;
 
         boxCollider.enabled = true;
         spriteRenderer.enabled = true;
