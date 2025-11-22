@@ -1,0 +1,43 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Audio;
+
+public enum AudioClips 
+{ 
+    MainTheme,
+    CoinSound,
+    BouncySound,
+    DeadSound,
+    MainMenuMiniTheme,
+    WinSound,
+    LooseSound
+}
+
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager Instance;
+
+    [SerializeField] private List<AudioClip> audioClips = new List<AudioClip>();
+    public Dictionary<AudioClips, AudioClip> clipList = new Dictionary<AudioClips, AudioClip> { };
+
+    private void Awake()
+    {
+        Instance = this;
+        clipList.Add(AudioClips.MainTheme, audioClips[0]);
+        clipList.Add(AudioClips.CoinSound, audioClips[1]);
+        clipList.Add(AudioClips.BouncySound, audioClips[2]);
+        clipList.Add(AudioClips.DeadSound, audioClips[3]);
+        clipList.Add(AudioClips.MainMenuMiniTheme, audioClips[4]);
+        clipList.Add(AudioClips.WinSound, audioClips[5]);
+        clipList.Add(AudioClips.LooseSound, audioClips[6]);
+    }
+
+    public static void PlaySound(AudioSource audioSource, AudioClip clip, AudioClips sound)
+    {
+        if (Instance.clipList.TryGetValue(sound, out clip))
+        {
+            audioSource.clip = clip;
+            audioSource.Play();
+        }
+    }
+}

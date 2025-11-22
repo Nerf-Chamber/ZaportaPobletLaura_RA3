@@ -2,25 +2,25 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
+  - IntroDialogue
+  - EndDialogue
   - 
   - 
+  - BouncyTerrain
+  - FinalZone
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Threat
+  - Player
   - 
   - 
   - 
@@ -41,3 +41,29 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Parallax_1
+    uniqueID: 383361081
+    locked: 0
+  - name: Parallax_2
+    uniqueID: 476360519
+    locked: 0
+  - name: Parallax_3
+    uniqueID: 1880315177
+    locked: 0
+  - name: Background
+    uniqueID: 3232523223
+    locked: 0
+  - name: DecorativeObjects
+    uniqueID: 963287015
+    locked: 0
+  - name: Threats
+    uniqueID: 3111434631
+    locked: 0
+  - name: ProjectilesOrigin
+    uniqueID: 173713753
+    locked: 0
+  - name: Characters
+    uniqueID: 1016170503
+    locked: 0
+  m_RenderingLayers:
+  - Default
